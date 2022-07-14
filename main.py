@@ -3,6 +3,7 @@ from glob import glob
 import os
 
 filenames = []
+frames_per_second = 30
 
 years = glob('../../Downloads/Camera app/*')
 for year in years:
@@ -21,7 +22,7 @@ with open("ffmpeg_input.txt", "wb") as outfile:
         outfile.write(f"file '{path}/{filename}'\n".encode())
         outfile.write(f"duration {duration}\n".encode())
 
-command_line = f"ffmpeg -r 60 -f concat -safe 0 -i ffmpeg_input.txt -c:v libx265 -pix_fmt yuv420p {path}\\timelapse_video.mp4"
+command_line = f"ffmpeg -r {frames_per_second} -f concat -safe 0 -i ffmpeg_input.txt -c:v libx265 -pix_fmt yuv420p {path}\\timelapse_video.mp4"
 
 pipe = subprocess.Popen(command_line, shell=True, stdout=subprocess.PIPE).stdout
 output = pipe.read().decode()
